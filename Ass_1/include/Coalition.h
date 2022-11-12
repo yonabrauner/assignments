@@ -10,9 +10,16 @@ using std::vector;
 
 class Coalition
 {
+
 public:
-    Coalition(int partyID);
+    int mMandates;
     vector<int> col;
-    int mandates;
+    Coalition(int partyID);
+    Coalition()
+    ~Coalition()
+    Coalition(const Coalition &other);
+    getCoalitionVector();
+    getNumMandates();
+    addToCoaltion(int partyID);
 };
 
