@@ -48,7 +48,7 @@ void JoinPolicy:: chooseCol(vector<Coalition>){
     if (/* condition */)
     {
         /* code */
-    }
+    }   
     
 }
 
