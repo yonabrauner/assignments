@@ -24,6 +24,6 @@ void Agent::step(Simulation &sim)
 }
 
 Coalition* Agent ::create_Coaliton(){
-    Coalition newCoaltion = new Coalition(this->getPartyId)
+    Coalition newCoaltion = new Coalition(this&.getPartyId)
 }
 
