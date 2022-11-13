@@ -17,7 +17,6 @@ class Parser
 public:
     static Simulation readSimulation(const string &path);
     static json makeJson(const Simulation &s);
-    static string stateToString(State state);
 
 private:
     static Simulation parseSimulation(const json &jSimulation);

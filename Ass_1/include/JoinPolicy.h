@@ -1,7 +1,20 @@
 #pragma once
 
-class JoinPolicy {};
+class JoinPolicy {
+    JoinPolicy(String &e);
+    virtual void chooseCol(vector<Coalition> req){};
+};
 
-class MandatesJoinPolicy : public JoinPolicy {};
+class MandatesJoinPolicy : public JoinPolicy {
+public:
 
-class LastOfferJoinPolicy : public JoinPolicy {};
+    MandatesJoinPolicy();
+    vitural void chooseCol(vector<Coalition> req);
+};
+
+class LastOfferJoinPolicy : public JoinPolicy {
+public:
+
+    LastOfferJoinPolicy();
+    virtual void chooseCol(vector<Coalition> req);
+};
