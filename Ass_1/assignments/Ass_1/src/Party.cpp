@@ -2,9 +2,9 @@
 #include "JoinPolicy.h"
 
 Party::Party(int id, string name, int mandates, JoinPolicy *jp) : mId(id), mName(name), mMandates(mandates), mJoinPolicy(jp),
- mState(Waiting),timer(0),req() 
-{
-    // You can change the implementation of the constructor, but not the signature!
+ mState(Waiting),timer(0),req()
+{   
+    
 }
 
 State Party::getState() const
@@ -28,12 +28,13 @@ const string & Party::getName() const
 }
 
 void Party::step(Simulation &s)
-{
+{   
     if(getState() == CollectingOffers){
         timer++;
     }
     if(timer == 3){
-        makedesicion();
+        mJoinPolicy->chooseCol(req,*this,s);
+        setState(Joined);
     }
 }
 
@@ -41,21 +42,14 @@ int Party::getId() const{
     return mId;
 }
 
-void Party:: addReq(Coalition col){
-
+int Party::getTime() const{
+    return timer;
 }
-void JoinPolicy:: chooseCol(vector<Coalition>){
-    if (/* condition */)
-    {
-        /* code */
-    }   
-    
+vector<Agent*> Party::getOffers()const{
+    return req;
 }
 
-void MandatesJoinPolicy:: chooseByM(vector<Coalition>){
-
+void Party::makeOffer(Agent &a){
+    req.push_back(&a);
 }
-void LastOfferJoinPolicy::chooseByL(vector<Coalition>){
-}
-
 

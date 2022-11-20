@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Coalition.h"
+#include "Agent.h"
 
 using std::string;
 
@@ -25,7 +25,10 @@ public:
     void step(Simulation &s);
     const string &getName() const;
     int getId() const;
-    void addReq(Coalition col);
+    int getTime()const;
+    void makeOffer(Agent &a);
+    vector<Agent*> getOffers()const;
+    
 
 private:
     int mId;
@@ -34,6 +37,6 @@ private:
     JoinPolicy *mJoinPolicy;
     State mState;
     int timer;
-    vector<Coalition> req;
+    vector<Agent*> req;
     void makedesicion();
 };

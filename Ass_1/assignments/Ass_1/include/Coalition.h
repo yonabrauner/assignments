@@ -12,15 +12,21 @@ class Coalition
 {
 
 public:
-    int mMandates;
-    std::vector<Party> col;
-    Coalition(Party Party);
+    Coalition(Party*);
     Coalition();
-    Coalition(Coalition &other);
+    Coalition(Coalition &);
     ~Coalition();
-    const vector <Party> getCoalitionVector();
-    const vector <int> getOutputVector(Coalition me);
+    Coalition(const Coalition& other);
+    Coalition& operator=(const Coalition& other);
+    Coalition::Coalition(Coalition&& other) noexcept;
+    Coalition& Coalition::operator=(Coalition&& other) noexcept;
+    const vector <Party*> getCoalitionVector()const;
+    const vector <int> getOutputVector(Coalition &me)const;
     int getNumMandates() const;
-    void addToCoaltion(Party Party);
+    const void addToCoaltion(Party* Party);
+
+private:
+    int mMandates;
+    vector<Party*> col;
 };
 

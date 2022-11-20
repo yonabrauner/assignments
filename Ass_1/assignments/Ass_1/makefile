@@ -21,5 +21,14 @@ bin/Party.o: src/Party.cpp
 bin/Simulation.o: src/Simulation.cpp
 	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Simulation.o src/Simulation.cpp
 
+bin/JoinPolicy.o: src/JoinPolicy.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/JoinPolicy.o src/JoinPolicy.cpp
+
+bin/SelectionPolicy.o: src/SelectionPolicy.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/SelectionPolicy.o src/SelectionPolicy.cpp
+
+bin/Coalition.o: src/Coalition.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Coalition.o src/Coalition.cpp
+
 clean:
 	rm -f bin/*
