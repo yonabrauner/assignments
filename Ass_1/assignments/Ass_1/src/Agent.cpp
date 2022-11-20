@@ -15,7 +15,7 @@ Agent::Agent(const Agent& other){
     this->mAgentId = other.getId();
     this->mPartyId = other.getPartyId();
     this->mSelectionPolicy = other.mSelectionPolicy;
-    this->myCoaltion = other.getCoalition();
+    this->mColId = other.getCoalitionId();
 }
 
 //copy assignment operator
@@ -24,7 +24,7 @@ Agent& Agent::operator=(const Agent& other){
         this->mAgentId = other.mAgentId;
         this->mPartyId = other.mPartyId;
         this->mSelectionPolicy = other.mSelectionPolicy;
-        this->myCoaltion = other.getCoalition();
+        this->mColId = other.getCoalitionId();
     }
     return *this;
 }
@@ -37,8 +37,6 @@ Agent::Agent::Agent(Agent&& other) noexcept{
 }
 //destructor    
 Agent::~Agent(){
-    delete myCoaltion;
-    myCoaltion = nullptr;
     delete mSelectionPolicy;
 }
 
@@ -61,20 +59,24 @@ void Agent::step(Simulation &sim)
 Coalition* Agent ::create_Coaliton(Graph g){
     Party party = (g.getParty(mPartyId));
     Party* qwe = &party;
-    mycol = this->getId();
+    mColId = this->getId();
     return &Coalition(qwe);
 }
 
-Coalition* Agent::getCoalition() const{
-    return myCoaltion;
-}
 
 void Agent::clone(Simulation &s,Party &p){
     Agent cloned = Agent(*this);
-    //need to change id from info from mAgents and need to change mParty
-    cloned.mPartyId = p.getId();
-    cloned.mAgentId = s.getAgents().size();
-    cloned.mSelectionPolicy = this->mSelectionPolicy;
+    cloned.setPartyId(p.getId());
+    cloned.setId(s.getAgents().size());
+    cloned.mSelectionPolicy = this->mSelectionPolicy->cloneMe();
     s.addAgent(cloned);
+}
+
+void Agent::setPartyId(int id){
+    mPartyId = id;
+}
+
+void Agent::setId(int id){
+    mAgentId = id;
 }
 

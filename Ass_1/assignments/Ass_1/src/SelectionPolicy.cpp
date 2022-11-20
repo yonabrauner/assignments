@@ -48,9 +48,20 @@ void EdgeWeightSelectionPolicy::makeOffer(Agent &me,Simulation&s){
 bool SelectionPolicy::isItFirstOffer(Agent &me, Party &p) const{
     vector<Agent*> offers = p.getOffers();
     for (Agent* a : offers){
-        if(a->getCoalition()==me.getCoalition()){
+        if(a->getCoalitionId()==me.getCoalitionId()){
             return false;
         }
     }
     return true;
+}
+
+//copy assignment operator
+SelectionPolicy* MandatesSelectionPolicy::cloneMe(){
+    MandatesSelectionPolicy* pol = new MandatesSelectionPolicy;
+    return pol;
+}
+
+SelectionPolicy* EdgeWeightSelectionPolicy::cloneMe(){
+    EdgeWeightSelectionPolicy* pol = new EdgeWeightSelectionPolicy;
+    return pol;
 }
