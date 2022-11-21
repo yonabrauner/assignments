@@ -1,7 +1,12 @@
 {
-    "files.associations": {
-        "vector": "cpp",
-        "iostream": "cpp",
-        "header": "cpp"
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/spl211/Desktop/Spl/assignments-main/Ass_1/assignments/Ass_1/bin",
+            "binaryPath": "/home/spl211/Desktop/Spl/assignments-main/Ass_1/assignments/Ass_1/bin/cRace",
+            "binaryArgs": ["/home/spl211/Desktop/Spl/assignments-main/Ass_1/assignments/Ass_1/tests/01.json"]
+        }
+    ],
+    "files.associations":{
+        "stdexcept": "cpp"
     }
 }
