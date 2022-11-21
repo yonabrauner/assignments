@@ -5,12 +5,12 @@
 class party;
 
 //constructor1
-Coalition::Coalition(){
+Coalition::Coalition() : mMandates(),col(){
     mMandates = 0;
 }
 
 //constructor2
-Coalition::Coalition(int partyId,int numOfM) {
+Coalition::Coalition(int partyId,int numOfM): mMandates(),col() {
     mMandates = numOfM;
     col.push_back(partyId);
 }
@@ -19,7 +19,7 @@ Coalition::Coalition(int partyId,int numOfM) {
 Coalition::~Coalition(){this->col.clear();}
 
 //copy constructor
-Coalition::Coalition(const Coalition &other){
+Coalition::Coalition(const Coalition &other) : mMandates(),col(){
         this->mMandates = other.getNumMandates();
         this->col = other.getCoalitionVector();
 }
@@ -31,12 +31,13 @@ Coalition& Coalition:: operator=(const Coalition& other)
 			delete &col;
             col = other.col;
             mMandates = other.mMandates; 
-	    	return *this;
+	    	
 		}
+        return *this;
 	}
 
 //move constructor
-Coalition::Coalition(Coalition&& other) noexcept : col(other.col), mMandates(other.mMandates)
+Coalition::Coalition(Coalition&& other) noexcept : mMandates(other.mMandates),col(other.col)
 {
     other.col.clear();
     other.col.~vector();

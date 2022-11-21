@@ -4,17 +4,19 @@
 #include "SelectionPolicy.h"
 #include "Simulation.h"
 
-Agent::Agent(int agentId, int partyId, SelectionPolicy *selectionPolicy) : mAgentId(agentId), mPartyId(partyId), mSelectionPolicy(selectionPolicy)
+Agent::Agent(int agentId, int partyId, SelectionPolicy *selectionPolicy) : mAgentId(agentId), mPartyId(partyId), mSelectionPolicy(selectionPolicy),
+mColId()
 {
     // You can change the implementation of the constructor, but not the signature!
     
 
 }
 //copy constructor
-Agent::Agent(const Agent& other){
+Agent::Agent(const Agent& other): mAgentId(), mPartyId(), mSelectionPolicy(),
+mColId(){
     this->mAgentId = other.getId();
     this->mPartyId = other.getPartyId();
-    this->mSelectionPolicy = other.mSelectionPolicy;
+    this->mSelectionPolicy = other.mSelectionPolicy->cloneMe();
     this->mColId = other.getCoalitionId();
 }
 
@@ -23,16 +25,19 @@ Agent& Agent::operator=(const Agent& other){
     if (this != &other){
         this->mAgentId = other.mAgentId;
         this->mPartyId = other.mPartyId;
-        this->mSelectionPolicy = other.mSelectionPolicy;
+        this->mSelectionPolicy = other.mSelectionPolicy->cloneMe();
         this->mColId = other.getCoalitionId();
     }
     return *this;
 }
 
 //move constructor
-Agent::Agent::Agent(Agent&& other) noexcept{
+Agent::Agent::Agent(Agent&& other) noexcept : mAgentId(), mPartyId(), mSelectionPolicy(),
+mColId() 
+{
     this->mAgentId = other.mAgentId;
     this->mPartyId = other.mPartyId;
+    this->mSelectionPolicy = other.mSelectionPolicy->cloneMe();
 
 }
 //destructor    
@@ -56,13 +61,6 @@ void Agent::step(Simulation &sim)
     mSelectionPolicy->makeOffer(*this,sim);
 }
 
-Coalition* Agent ::create_Coaliton(Graph g){
-    int numOfM = (g.getParty(mPartyId)).getMandates();
-    mColId = this->getId();
-    Coalition* newCol = new Coalition(mPartyId,numOfM);
-    return newCol;
-}
-
 
 void Agent::clone(Simulation &s,Party &p){
     Agent cloned = Agent(*this);
@@ -84,3 +82,6 @@ int Agent:: getCoalitionId()const{
     return mColId;
 }
 
+void Agent:: setCol(int colId){
+    mColId = colId;
+}

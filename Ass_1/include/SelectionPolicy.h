@@ -8,12 +8,14 @@ class Simulation;
 class SelectionPolicy {
     public:
     bool isItFirstOffer(Agent &me,Party &p,Simulation &s) const;
+    virtual ~SelectionPolicy() = default;
     virtual void makeOffer(Agent &me,Simulation &s) = 0;
-    virtual SelectionPolicy* cloneMe();
+    virtual SelectionPolicy* cloneMe() = 0;
  };
 
 class MandatesSelectionPolicy: public SelectionPolicy{
     public:
+    ~MandatesSelectionPolicy() = default;
     virtual void makeOffer(Agent &me,Simulation &s);
     virtual SelectionPolicy* cloneMe();
 
@@ -21,6 +23,7 @@ class MandatesSelectionPolicy: public SelectionPolicy{
 
 class EdgeWeightSelectionPolicy: public SelectionPolicy{
     public:
+     ~EdgeWeightSelectionPolicy() = default;
     virtual void makeOffer(Agent &me,Simulation &s);
     virtual SelectionPolicy* cloneMe();
  };

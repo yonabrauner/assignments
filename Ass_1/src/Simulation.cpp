@@ -1,17 +1,17 @@
 #include "Simulation.h"
 #include <iostream>
 #include "Coalition.h"
+#include "Party.h"
 
 class Coalition;
 
-Simulation::Simulation(Graph graph, vector<Agent> agents) : mGraph(graph), mAgents(agents)
+Simulation::Simulation(Graph graph, vector<Agent> agents) : mGraph(graph), mAgents(agents),mCoalitions()
 {
-    vector<Coalition*> newCols;
     for (Agent& agent: mAgents){
-        Coalition* toInsert = agent.create_Coaliton(mGraph);
-        newCols.push_back(toInsert);
-        Party party = mGraph.getParty(agent.getPartyId());
-        party.setState(Joined);
+        Party p = mGraph.getParty(agent.getPartyId());
+        Coalition* coNew = new Coalition(p.getId(),p.getMandates());
+        mCoalitions.push_back(coNew);
+        agent.setCol(agent.getId());
     }
 }
 
@@ -62,10 +62,10 @@ void Simulation:: addAgent(Agent &a){
     mAgents.push_back(a);
 }
 
-const vector<Coalition*> &Simulation::getCoalitions() const
-{
-    return mCoalitions;
-}
+// vector<Coalition*> &Simulation::getCoalitions() const
+// {
+//     return mCoalitions;
+// }
 
 Coalition* Simulation::getCoalitionById(int colId){
     return mCoalitions.at(colId);

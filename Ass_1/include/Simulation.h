@@ -21,7 +21,7 @@ public:
     const Graph &getGraph() const;
     const vector<Agent> &getAgents() const;
     const Party &getParty(int partyId) const;
-    const vector<Coalition*> &getCoalitions() const;
+    vector<Coalition*> getCoalitions() const;
     const vector<vector<int>> getPartiesByCoalitions() const;
     void addAgent(Agent &a);
     Coalition* getCoalitionById(int colId);
@@ -29,5 +29,5 @@ public:
 private:
     Graph mGraph;
     vector<Agent> mAgents;
-    const vector<Coalition*> mCoalitions;
+    vector<Coalition*> mCoalitions;
 };

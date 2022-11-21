@@ -19,7 +19,11 @@ class Party
 {
 public:
     Party(int id, string name, int mandates, JoinPolicy *); 
-
+    ~Party();                                     //destructor
+    Party(const Party& other);                    //copy constructor 
+    Party& operator=(const Party& other);         //copy assignment operator
+    Party(Party&& other) noexcept;                //move constructor
+    Party& operator=(Party&& other) noexcept;     //move assignment operator
     State getState() const;
     void setState(State state);
     int getMandates() const;
@@ -29,6 +33,7 @@ public:
     int getTime()const;
     void submitAnOffer(int agentId);
     vector<int> getOffers()const;
+
     
 
 private:

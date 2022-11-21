@@ -12,7 +12,7 @@ void MandatesSelectionPolicy::makeOffer(Agent &me,Simulation &s){
     int bestM = 0;
     Party* best = 0;
     for (Party p : g->getNeighbors(me.getPartyId())){
-        if (!p.getState() == Joined)
+        if (!(p.getState() == Joined))
         {
             if(isItFirstOffer(me,p,s)){
                 if(p.getMandates() > bestM){
@@ -32,7 +32,7 @@ void EdgeWeightSelectionPolicy::makeOffer(Agent &me,Simulation& s){
     int bestE = 0;
     Party* best = 0;
     for (Party p : g->getNeighbors(me.getPartyId())){
-        if (!p.getState() == Joined && g->getEdgeWeight(mine,p.getId()) > bestE)
+        if (!(p.getState() == Joined) && g->getEdgeWeight(mine,p.getId()) > bestE)
         {
             if(isItFirstOffer(me,p,s)){
                 best = &p;

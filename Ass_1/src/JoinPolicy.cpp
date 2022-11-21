@@ -37,3 +37,10 @@ void LastOfferJoinPolicy::chooseCol(vector<int> req,Party &p,Simulation &s){
     req.clear();
 }
 
+JoinPolicy* MandatesJoinPolicy::cloneMe(){
+    return new MandatesJoinPolicy;
+}
+
+JoinPolicy* LastOfferJoinPolicy::cloneMe(){
+    return new LastOfferJoinPolicy;
+}

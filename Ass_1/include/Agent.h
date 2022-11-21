@@ -22,8 +22,8 @@ public:
     int getId() const;
     int getCoalitionId() const;
     void step(Simulation &);
-    Coalition* create_Coaliton(Graph g);
     void clone(Simulation &s,Party &p);
+    void setCol(int colId);
 private:
     int mAgentId;
     int mPartyId;
