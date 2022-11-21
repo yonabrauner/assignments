@@ -21,7 +21,6 @@ public:
     Coalition(Coalition&& other) noexcept;
     Coalition& operator=(Coalition&& other) noexcept;
     const vector <int> getCoalitionVector()const;
-    // const vector <int> getOutputVector(Coalition &me)const;
     int getNumMandates() const;
     const void addToCoaltion(int partyId, int numOfM);
 

@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Coalition.h"
 #include "Party.h"
+#include <vector>
 
 class Coalition;
 
@@ -75,6 +76,9 @@ Coalition* Simulation::getCoalitionById(int colId){
 /// At the simulation initialization - the result will be [[agent0.partyId], [agent1.partyId], ...]
 const vector<vector<int>> Simulation::getPartiesByCoalitions() const
 {
-    // TODO: you MUST implement this method for getting proper output, read the documentation above.
-    return vector<vector<int>>();
+    vector<vector<int>> output;
+    for(const Coalition* col : mCoalitions){
+        output.push_back(col->getCoalitionVector());
+    }
+    return output;
 }
