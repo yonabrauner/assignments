@@ -26,6 +26,7 @@ public:
     void addAgent(Agent &a);
     Coalition* getCoalitionById(int colId);
     void sendOffer(int partyId, int agentId);
+    void acceptOffer(int agentId, int partyId);
 
 private:
     Graph mGraph;

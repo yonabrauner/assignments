@@ -76,6 +76,12 @@ void Simulation::sendOffer(int partyId, int agentId){
     this->mGraph.sendOffer(partyId,agentId);
 }
 
+void Simulation::acceptOffer(int agentId, int partyId){
+    int mMandates = this->mGraph.getParty(partyId).getMandates();
+    int colId = mAgents.at(agentId).getCoalitionId();
+    mCoalitions.at(colId)->addToCoaltion(partyId,mMandates);
+}
+
 /// This method returns a "coalition" vector, where each element is a vector of party IDs in the coalition.
 /// At the simulation initialization - the result will be [[agent0.partyId], [agent1.partyId], ...]
 const vector<vector<int>> Simulation::getPartiesByCoalitions() const
@@ -84,5 +90,7 @@ const vector<vector<int>> Simulation::getPartiesByCoalitions() const
     for(const Coalition* col : mCoalitions){
         output.push_back(col->getCoalitionVector());
     }
+    std::cout<<"finit";
     return output;
 }
+

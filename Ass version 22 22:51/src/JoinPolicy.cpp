@@ -29,12 +29,14 @@ class JoinPolicy;
 };
 
 void LastOfferJoinPolicy::chooseCol(vector<int> req,Party &p,Simulation &s){
-    vector<Agent> allAgents = s.getAgents();
-    Agent best = allAgents.at(req.back());
-    Coalition* newcol = s.getCoalitionById(best.getCoalitionId());
-    newcol->addToCoaltion(p.getId(),p.getMandates());
-    best.clone(s,p);
-    req.clear();
+    // vector<Agent> allAgents = s.getAgents();
+    // Agent best = allAgents.at(req.back());
+    // Coalition* newcol = s.getCoalitionById(best.getCoalitionId());
+    // newcol->addToCoaltion(p.getId(),p.getMandates());
+    // best.clone(s,p);
+    // req.clear();
+    int bestId = req.back();
+    s.acceptOffer(bestId,p.getId());
 }
 
 JoinPolicy* MandatesJoinPolicy::cloneMe(){
