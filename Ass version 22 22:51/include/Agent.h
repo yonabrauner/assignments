@@ -22,14 +22,13 @@ public:
     int getId() const;
     int getCoalitionId() const;
     void step(Simulation &);
-    void clone(Simulation &s,Party &p);
     void setCol(int colId);
+    void setPartyId(int id);
+    void setId(int id);
     
 private:
     int mAgentId;
     int mPartyId;
     SelectionPolicy *mSelectionPolicy;
     int mColId;
-    void setPartyId(int id);
-    void setId(int id);
 };

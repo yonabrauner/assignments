@@ -14,7 +14,7 @@ public:
     int getEdgeWeight(int v1, int v2) const;
     int getNumVertices() const;
     const Party &getParty(int partyId) const;
-    const vector <int> getNeighbors(int partyId) const;
+    const vector <int> getNeighbors(int partyId)const;
     void sendOffer(int partyId, int agentId);
     void partyStep(int partyId,Simulation &s);
 

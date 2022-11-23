@@ -30,9 +30,8 @@ public:
     void step(Simulation &s);
     const string &getName() const;
     int getId() const;
-    int getTime()const;
     void submitAnOffer(int agentId);
-    vector<int> getOffers()const;
+    vector<int> &getOffers();
 
     
 
@@ -44,6 +43,4 @@ private:
     State mState;
     int timer;
     vector<int> offers;
-    void makedesicion();
-    void cleanup();
 };

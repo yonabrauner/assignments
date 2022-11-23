@@ -16,33 +16,26 @@ Agent::~Agent(){
 }
 
 //copy constructor
-Agent::Agent(const Agent& other): mAgentId(), mPartyId(), mSelectionPolicy(),
-mColId(){
-    this->mAgentId = other.getId();
-    this->mPartyId = other.getPartyId();
-    this->mSelectionPolicy = other.mSelectionPolicy->cloneMe();
-    this->mColId = other.getCoalitionId();
+Agent::Agent(const Agent& other): mAgentId(other.mAgentId), mPartyId(other.mPartyId), mSelectionPolicy(other.mSelectionPolicy->cloneMe()),
+mColId(other.mColId){
+   
 }
 
 //copy assignment operator
 Agent& Agent::operator=(const Agent& other){
     if (this != &other){
-        this->mAgentId = other.mAgentId;
-        this->mPartyId = other.mPartyId;
-        this->mSelectionPolicy = other.mSelectionPolicy->cloneMe();
-        this->mColId = other.getCoalitionId();
+        mAgentId = other.mAgentId;
+        mPartyId = other.mPartyId;
+        *mSelectionPolicy = *other.mSelectionPolicy;
+        mColId = other.mColId;
     }
     return *this;
 }
 
 //move constructor
-Agent::Agent(Agent&& other) noexcept : mAgentId(), mPartyId(), mSelectionPolicy(),
-mColId() 
+Agent::Agent(Agent&& other) noexcept : mAgentId(other.mAgentId), mPartyId(other.mPartyId), mSelectionPolicy(other.mSelectionPolicy),
+mColId(other.mColId) 
 {
-    this->mAgentId = other.mAgentId;
-    this->mPartyId = other.mPartyId;
-    this->mSelectionPolicy = other.mSelectionPolicy->cloneMe();
-    this->mColId = other.mColId;
     other.mSelectionPolicy = nullptr;
 }
 
@@ -50,10 +43,10 @@ mColId()
 Agent& Agent::operator=(Agent&& other) noexcept{
     if (this != &other){
         delete this->mSelectionPolicy;
-        this->mAgentId = other.mAgentId;
-        this->mColId = other.mColId;
-        this->mPartyId = other.mPartyId;
-        this->mSelectionPolicy = other.mSelectionPolicy;
+        mAgentId = other.mAgentId;
+        mColId = other.mColId;
+        mPartyId = other.mPartyId;
+        mSelectionPolicy = other.mSelectionPolicy;
         other.mSelectionPolicy = nullptr;
     }
     return *this;
@@ -74,14 +67,6 @@ void Agent::step(Simulation &sim)
     mSelectionPolicy->makeOffer(*this,sim);
 }
 
-
-void Agent::clone(Simulation &s,Party &p){
-    Agent cloned = Agent(*this);
-    cloned.setPartyId(p.getId());
-    cloned.setId(s.getAgents().size());
-    cloned.mSelectionPolicy = this->mSelectionPolicy->cloneMe();
-    s.addAgent(cloned);
-}
 
 void Agent::setPartyId(int id){
     mPartyId = id;

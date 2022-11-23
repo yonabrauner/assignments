@@ -13,8 +13,7 @@ void MandatesSelectionPolicy::makeOffer(Agent &me,Simulation &s){
     int bestId = -1;
     for (int i : g->getNeighbors(me.getPartyId())){
         Party p = g->getParty(i);
-        if (!(p.getState() == Joined))
-        {
+        if (!(p.getState() == Joined)){
             if(isItFirstOffer(me,p,s)){
                 if(p.getMandates() > bestM){
                 bestId = p.getId();
@@ -37,8 +36,7 @@ void EdgeWeightSelectionPolicy::makeOffer(Agent &me,Simulation& s){
     for (int i : g->getNeighbors(me.getPartyId())){
         Party p = g->getParty(i);
         if ((p.getState() != Joined)){
-            if(g->getEdgeWeight(mine,p.getId()) > bestE)
-            {
+            if(g->getEdgeWeight(mine,p.getId()) > bestE){
                 if(isItFirstOffer(me,p,s)){
                     bestId = p.getId();
                     bestE = g->getEdgeWeight(mine,p.getId());
@@ -47,10 +45,6 @@ void EdgeWeightSelectionPolicy::makeOffer(Agent &me,Simulation& s){
         }
     }
     if(bestId != -1){
-        // Party best = g->getParty(bestId);
-        // best.submitAnOffer(me.getId());
-        // g->getParty(bestId).submitAnOffer(me.getId());
-        // best.setState(CollectingOffers);
         s.sendOffer(bestId,me.getId());
     }
 }

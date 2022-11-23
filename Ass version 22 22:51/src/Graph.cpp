@@ -24,20 +24,22 @@ const Party &Graph::getParty(int partyId) const
 {
     return mVertices[partyId];
 }
-const vector<int> Graph::getNeighbors(int partyId)const{
+
+const vector<int> Graph::getNeighbors(int partyId) const{
     vector<int> neighbors;
     for (int i = 0; i < getNumVertices();i++){
         if(getEdgeWeight(i,partyId) != 0 ){
-            // Party toInsert = getParty(i);
             neighbors.push_back(i);
         }
     }
     return neighbors;
 }
+
 void Graph::sendOffer(int partyId, int agentId){
     mVertices[partyId].submitAnOffer(agentId);
     mVertices[partyId].setState(CollectingOffers);
 }
+
 void Graph::partyStep(int partyId,Simulation &s){
     mVertices[partyId].step(s);
 }

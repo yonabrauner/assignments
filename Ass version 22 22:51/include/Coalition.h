@@ -13,14 +13,7 @@ class Coalition
 
 public:
     Coalition(int partyId,int numOfM);
-    Coalition();
-    Coalition(Coalition &);
-    ~Coalition();
-    Coalition(const Coalition& other);
-    Coalition& operator=(const Coalition& other);
-    Coalition(Coalition&& other) noexcept;
-    Coalition& operator=(Coalition&& other) noexcept;
-    const vector <int> getCoalitionVector()const;
+    vector <int> &getCoalitionVector();
     int getNumMandates() const;
     const void addToCoaltion(int partyId, int numOfM);
 

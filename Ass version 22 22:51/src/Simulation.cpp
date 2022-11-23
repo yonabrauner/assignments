@@ -10,7 +10,7 @@ Simulation::Simulation(Graph graph, vector<Agent> agents) : mGraph(graph), mAgen
 {
     for (Agent& agent: mAgents){
         Party p = mGraph.getParty(agent.getPartyId());
-        Coalition* coNew = new Coalition(p.getId(),p.getMandates());
+        Coalition coNew =  Coalition(p.getId(),p.getMandates());
         mCoalitions.push_back(coNew);
         agent.setCol(agent.getId());
     }
@@ -21,7 +21,6 @@ void Simulation::step()
     int numOfParties = mGraph.getNumVertices();
     for (int i = 0; i<numOfParties; i++){
         mGraph.partyStep(i,*this);
-        // party.step(*this);
     }
     for(Agent& agent: mAgents){
         agent.step(*this);
@@ -32,8 +31,8 @@ bool Simulation::shouldTerminate() const
 {
     int sum = 0;
     int n;
-    for (const Coalition* col: mCoalitions){
-        n = col->getNumMandates();
+    for (const Coalition col: mCoalitions){
+        n = col.getNumMandates();
         if(n>60){
             return true;
         }
@@ -59,16 +58,8 @@ const Party &Simulation::getParty(int partyId) const
 {
     return mGraph.getParty(partyId);
 }
-void Simulation:: addAgent(Agent &a){
-    mAgents.push_back(a);
-}
 
-// vector<Coalition*> &Simulation::getCoalitions() const
-// {
-//     return mCoalitions;
-// }
-
-Coalition* Simulation::getCoalitionById(int colId){
+Coalition &Simulation::getCoalitionById(int colId){
     return mCoalitions.at(colId);
 }
 
@@ -79,7 +70,11 @@ void Simulation::sendOffer(int partyId, int agentId){
 void Simulation::acceptOffer(int agentId, int partyId){
     int mMandates = this->mGraph.getParty(partyId).getMandates();
     int colId = mAgents.at(agentId).getCoalitionId();
-    mCoalitions.at(colId)->addToCoaltion(partyId,mMandates);
+    mCoalitions.at(colId).addToCoaltion(partyId,mMandates);
+    Agent cloned = mAgents.at(agentId);
+    cloned.setId(mAgents.size());
+    cloned.setPartyId(partyId);
+    mAgents.push_back(cloned);
 }
 
 /// This method returns a "coalition" vector, where each element is a vector of party IDs in the coalition.
@@ -87,10 +82,10 @@ void Simulation::acceptOffer(int agentId, int partyId){
 const vector<vector<int>> Simulation::getPartiesByCoalitions() const
 {
     vector<vector<int>> output;
-    for(const Coalition* col : mCoalitions){
-        output.push_back(col->getCoalitionVector());
+    for(Coalition col : mCoalitions){
+        output.push_back(col.getCoalitionVector());
     }
-    std::cout<<"finit";
+    std::cout<<"finit" <<std::endl;
     return output;
 }
 

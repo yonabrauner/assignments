@@ -9,32 +9,22 @@ using std::string;
 using std::vector;
 class JoinPolicy;
 
- void MandatesJoinPolicy::chooseCol(vector<int> req,Party &p,Simulation &s){
-    //make sure we dont go in an empty vector
+ void MandatesJoinPolicy::chooseCol(vector<int> offers,Party &p,Simulation &s){
     vector<Agent> allAgents = s.getAgents();
-    Agent best = allAgents.at(req.back());
-    req.pop_back();
-    int numOfM = s.getCoalitionById(best.getCoalitionId())->getNumMandates();
-    while(!req.empty()){
-        Agent curr = allAgents.at(req.back());
-        if(s.getCoalitionById(curr.getCoalitionId())->getNumMandates() >= numOfM){
+    Agent best = allAgents.at(offers.back());
+    offers.pop_back();
+    int numOfM = s.getCoalitionById(best.getCoalitionId()).getNumMandates();
+    while(!offers.empty()){
+        Agent curr = allAgents.at(offers.back());
+        if(s.getCoalitionById(curr.getCoalitionId()).getNumMandates() >= numOfM){
             best = curr;
         }
-        req.pop_back();
+        offers.pop_back();
     }
-    Coalition* newcol = s.getCoalitionById(best.getCoalitionId());
-    newcol->addToCoaltion(p.getId(),p.getMandates());
-    best.clone(s,p);
-    req.clear();
+    s.acceptOffer(best.getId(),p.getId());
 };
 
 void LastOfferJoinPolicy::chooseCol(vector<int> req,Party &p,Simulation &s){
-    // vector<Agent> allAgents = s.getAgents();
-    // Agent best = allAgents.at(req.back());
-    // Coalition* newcol = s.getCoalitionById(best.getCoalitionId());
-    // newcol->addToCoaltion(p.getId(),p.getMandates());
-    // best.clone(s,p);
-    // req.clear();
     int bestId = req.back();
     s.acceptOffer(bestId,p.getId());
 }
