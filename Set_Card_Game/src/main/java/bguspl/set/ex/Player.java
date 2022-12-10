@@ -48,7 +48,9 @@ public class Player implements Runnable {
     /**
      * The current score of the player.
      */
+    private final Dealer dealer;
     private int score;
+    private int tokens;
 
     /**
      * The class constructor.
@@ -64,6 +66,7 @@ public class Player implements Runnable {
         this.table = table;
         this.id = id;
         this.human = human;
+        this.dealer = dealer;
     }
 
     /**
@@ -74,9 +77,11 @@ public class Player implements Runnable {
         playerThread = Thread.currentThread();
         System.out.printf("Info: Thread %s starting.%n", Thread.currentThread().getName());
         if (!human) createArtificialIntelligence();
-
+        //
         while (!terminate) {
             // TODO implement main player loop
+            //WAIT for counter to be 3
+            //when threeF
         }
         if (!human) try { aiThread.join(); } catch (InterruptedException ignored) {}
         System.out.printf("Info: Thread %s terminated.%n", Thread.currentThread().getName());
@@ -115,6 +120,16 @@ public class Player implements Runnable {
      */
     public void keyPressed(int slot) {
         // TODO implement
+        if(!table.removeToken(id, slot)){
+            table.placeToken(id, slot);
+            tokens++;
+        }
+        else{
+            tokens--;
+        }
+        if(tokens == 3){
+            this.dealer.checkTokens(id);
+        }
     }
 
     /**
@@ -135,6 +150,7 @@ public class Player implements Runnable {
      */
     public void penalty() {
         // TODO implement
+        //wait for few seconds
     }
 
     public int getScore() {

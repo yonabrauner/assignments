@@ -70,6 +70,9 @@ public class Dealer implements Runnable {
             removeCardsFromTable();
             placeCardsOnTable();
         }
+        // if !terminate -- reshuffle the cards
+        //enter the timerloop again
+        // else 
     }
 
     /**
@@ -77,6 +80,7 @@ public class Dealer implements Runnable {
      */
     public void terminate() {
         // TODO implement
+        
     }
 
     /**
@@ -93,6 +97,7 @@ public class Dealer implements Runnable {
      */
     private void removeCardsFromTable() {
         // TODO implement
+        //
     }
 
     /**
@@ -100,6 +105,9 @@ public class Dealer implements Runnable {
      */
     private void placeCardsOnTable() {
         // TODO implement
+        //while missing cards remove first card on deck send to table::place card
+
+        
     }
 
     /**
@@ -128,5 +136,10 @@ public class Dealer implements Runnable {
      */
     private void announceWinners() {
         // TODO implement
+    }
+
+    public void checkTokens(int player){
+        List<Integer> mTokens = table.getTokenByPlayer(player);
+        
     }
 }

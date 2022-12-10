@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * An interface for general utilities provided for convenience.
  */
-public interface Util {
+public interface fUtil {
 
     /**
      * Converts a card id to an array of features (of config.featureCount values between 0 and config.featuresSize - 1)

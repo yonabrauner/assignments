@@ -2,10 +2,15 @@ package bguspl.set.ex;
 
 import bguspl.set.Env;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import org.drools.core.util.LinkedList;
+import org.omg.CORBA.ExceptionList;
+import org.omg.IOP.ExceptionDetailMessage;
 
 /**
  * This class contains the data that is visible to the player.
@@ -29,6 +34,8 @@ public class Table {
      */
     protected final Integer[] cardToSlot; // slot per card (if any)
 
+    private final List<Integer>[] tokens = new ArrayList[2];
+
     /**
      * Constructor for testing.
      *
@@ -41,6 +48,7 @@ public class Table {
         this.env = env;
         this.slotToCard = slotToCard;
         this.cardToSlot = cardToSlot;
+
     }
 
     /**
@@ -95,6 +103,8 @@ public class Table {
         slotToCard[slot] = card;
 
         // TODO implement
+        // needs to rest for a bit
+
     }
 
     /**
@@ -107,6 +117,7 @@ public class Table {
         } catch (InterruptedException ignored) {}
 
         // TODO implement
+        slotToCard[slot] = null;
     }
 
     /**
@@ -116,6 +127,8 @@ public class Table {
      */
     public void placeToken(int player, int slot) {
         // TODO implement
+        
+        throw new RuntimeException("u fucked up");
     }
 
     /**
@@ -125,7 +138,10 @@ public class Table {
      * @return       - true iff a token was successfully removed.
      */
     public boolean removeToken(int player, int slot) {
-        // TODO implement
-        return false;
+        return tokens[player].remove((Integer)slot);
+    }
+    
+    public List<Integer> getTokenByPlayer(int player){
+        return tokens[player];
     }
 }
