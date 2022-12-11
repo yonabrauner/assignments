@@ -102,10 +102,10 @@ public class Dealer implements Runnable {
      */
     private void removeCardsFromTable() {
         // TODO implement
-        for(List<Integer> tokens : table.tokens){
-            if(tokens.size()==3){
-                for(Integer slot : tokens){
-                    table.removeCard(slot);
+        for(List<Integer> tokensofP : table.tokens){
+            if(tokensofP.size()==3){
+                for(Integer card : tokensofP){
+                    table.removeCard(table.cardToSlot[card]);
                 }
             }
         }
@@ -178,11 +178,13 @@ public class Dealer implements Runnable {
             env.ui.setScore(player, players[player].getScore());
             removeCardsFromTable();
             Collections.shuffle(deck);
+            table.removeTokens(player);
+            placeCardsOnTable();
         }
         else{
-            table.tokens.get(player).clear();
             players[player].penalty();
         }
+        
             
     }
 

@@ -120,6 +120,7 @@ public class Table {
 
         // TODO implement
         slotToCard[slot] = 0;
+        env.ui.removeCard(slot);
     }
 
     /**
@@ -156,6 +157,7 @@ public class Table {
         //     System.out.println(slotToCard[tokens.get(player).get(i)]);
         //     set[i] = slotToCard[tokens.get(player).get(i)];
         // }
+        // con
         int[] set = tokens.get(player).stream().mapToInt(i->i).toArray();
         return set;
     }
@@ -163,6 +165,12 @@ public class Table {
     private void createTokenList(){
         for (int i = 0; i<env.config.players;i++){
             tokens.add(new ArrayList<Integer>());
+        }
+    }
+
+    public void removeTokens(int player){
+        for(int card : tokens.get(player)){
+            removeToken(player, cardToSlot[card]);
         }
     }
 }

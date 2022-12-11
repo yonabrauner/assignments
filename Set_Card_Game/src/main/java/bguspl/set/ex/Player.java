@@ -129,6 +129,7 @@ public class Player implements Runnable {
         }
         if(tokens == 3){
             this.dealer.checkTokens(id);
+            
         }
     }
 
