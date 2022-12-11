@@ -34,7 +34,7 @@ public class Table {
      */
     protected final Integer[] cardToSlot; // slot per card (if any)
 
-    private final List<Integer>[] tokens = new ArrayList[2];
+    protected final List<List<Integer>> tokens = new ArrayList<List<Integer>>() ;
 
     /**
      * Constructor for testing.
@@ -48,6 +48,7 @@ public class Table {
         this.env = env;
         this.slotToCard = slotToCard;
         this.cardToSlot = cardToSlot;
+        createTokenList();
 
     }
 
@@ -101,6 +102,7 @@ public class Table {
 
         cardToSlot[card] = slot;
         slotToCard[slot] = card;
+        env.ui.placeCard(card, slot);
 
         // TODO implement
         // needs to rest for a bit
@@ -117,7 +119,7 @@ public class Table {
         } catch (InterruptedException ignored) {}
 
         // TODO implement
-        slotToCard[slot] = null;
+        slotToCard[slot] = 0;
     }
 
     /**
@@ -127,8 +129,11 @@ public class Table {
      */
     public void placeToken(int player, int slot) {
         // TODO implement
+        tokens.get(player).add(slotToCard[slot]);
+        env.ui.placeToken(player, slot);
+
         
-        throw new RuntimeException("u fucked up");
+        // throw new RuntimeException("u fucked up");
     }
 
     /**
@@ -138,10 +143,26 @@ public class Table {
      * @return       - true iff a token was successfully removed.
      */
     public boolean removeToken(int player, int slot) {
-        return tokens[player].remove((Integer)slot);
+        if(tokens.get(player).remove(slotToCard[slot])){
+            env.ui.removeToken(player, slot);
+            return true;
+        }
+        return false;
     }
     
-    public List<Integer> getTokenByPlayer(int player){
-        return tokens[player];
+    public int[] getPlayerSet(int player){
+        // int[] set = new int[3];
+        // for(int i = 0; i < 3; i++) { 
+        //     System.out.println(slotToCard[tokens.get(player).get(i)]);
+        //     set[i] = slotToCard[tokens.get(player).get(i)];
+        // }
+        int[] set = tokens.get(player).stream().mapToInt(i->i).toArray();
+        return set;
+    }
+
+    private void createTokenList(){
+        for (int i = 0; i<env.config.players;i++){
+            tokens.add(new ArrayList<Integer>());
+        }
     }
 }

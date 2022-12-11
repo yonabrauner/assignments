@@ -1,5 +1,6 @@
 package bguspl.set;
 
+
 public class Env {
 
     public final Config config;
