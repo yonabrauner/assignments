@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.locks.Lock;
 import java.util.stream.Collectors;
 
 import org.drools.core.util.LinkedList;
@@ -35,6 +36,8 @@ public class Table {
     protected final Integer[] cardToSlot; // slot per card (if any)
 
     protected final List<List<Integer>> tokens = new ArrayList<List<Integer>>() ;
+
+    public static Lock lock;
 
     /**
      * Constructor for testing.
@@ -119,7 +122,8 @@ public class Table {
         } catch (InterruptedException ignored) {}
 
         // TODO implement
-        slotToCard[slot] = 0;
+        cardToSlot[slotToCard[slot]] = null;
+        slotToCard[slot] = null;
         env.ui.removeCard(slot);
     }
 
@@ -130,11 +134,8 @@ public class Table {
      */
     public void placeToken(int player, int slot) {
         // TODO implement
-        tokens.get(player).add(slotToCard[slot]);
+        tokens.get(player).add(slot);
         env.ui.placeToken(player, slot);
-
-        
-        // throw new RuntimeException("u fucked up");
     }
 
     /**
@@ -144,7 +145,8 @@ public class Table {
      * @return       - true iff a token was successfully removed.
      */
     public boolean removeToken(int player, int slot) {
-        if(tokens.get(player).remove(slotToCard[slot])){
+        if(tokens.get(player).contains(slot)){
+            tokens.get(player).remove((Integer)slot);
             env.ui.removeToken(player, slot);
             return true;
         }
@@ -152,25 +154,27 @@ public class Table {
     }
     
     public int[] getPlayerSet(int player){
-        // int[] set = new int[3];
-        // for(int i = 0; i < 3; i++) { 
-        //     System.out.println(slotToCard[tokens.get(player).get(i)]);
-        //     set[i] = slotToCard[tokens.get(player).get(i)];
-        // }
-        // con
         int[] set = tokens.get(player).stream().mapToInt(i->i).toArray();
+        for (int i = 0; i < 3; i++){
+            set[i] = slotToCard[set[i]]; 
+        }
         return set;
     }
-
+    //create a token list for each player
     private void createTokenList(){
         for (int i = 0; i<env.config.players;i++){
             tokens.add(new ArrayList<Integer>());
         }
     }
 
+    //removes all the token of a player
     public void removeTokens(int player){
-        for(int card : tokens.get(player)){
-            removeToken(player, cardToSlot[card]);
+        //lock the table
+        for(int i = 2; i > -1; i--){
+            int slot = tokens.get(player).get(i);
+            for(int j = 0; j < tokens.size();j++){
+                removeToken(j,slot);
+            }
         }
     }
 }

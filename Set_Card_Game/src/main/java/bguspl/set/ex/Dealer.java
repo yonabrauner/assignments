@@ -39,7 +39,7 @@ public class Dealer implements Runnable {
     /**
      * The time when the dealer needs to reshuffle the deck due to turn timeout.
      */
-    private long reshuffleTime = Long.MAX_VALUE;
+    private long reshuffleTime = 60000;
     private Thread[] playersThread;
 
     public Dealer(Env env, Table table, Player[] players) {
@@ -58,9 +58,10 @@ public class Dealer implements Runnable {
         while (!shouldFinish()) {
             createAndStartThreads();
             Collections.shuffle(deck);
+            // reshuffleTime = System.currentTimeMillis()+ 60000;
             placeCardsOnTable();
+            updateTimerDisplay(true);
             timerLoop();
-            updateTimerDisplay(false);
             removeAllCardsFromTable();
             
         }
@@ -73,7 +74,7 @@ public class Dealer implements Runnable {
      */
     private void timerLoop() {
         while (!terminate && System.currentTimeMillis() < reshuffleTime) {
-            sleepUntilWokenOrTimeout();
+            sleepUntilWokenOrTimeout();//wait a second and reshuffle time
             updateTimerDisplay(false);
             removeCardsFromTable();
             placeCardsOnTable();
@@ -101,13 +102,17 @@ public class Dealer implements Runnable {
      * Checks if any cards should be removed from the table and returns them.
      */
     private void removeCardsFromTable() {
-        // TODO implement
-        for(List<Integer> tokensofP : table.tokens){
-            if(tokensofP.size()==3){
-                for(Integer card : tokensofP){
-                    table.removeCard(table.cardToSlot[card]);
-                }
-            }
+        // for(List<Integer> tokensofP : table.tokens){
+        //     if(tokensofP.size()==3){
+        //         for(Integer slot : tokensofP){
+        //             table.removeCard(slot);
+        //         }
+        //     }
+        // }
+    }
+    private void removeCardsFromTable(int player) {
+        for (int token : table.tokens.get(player)){
+                    table.removeCard(token);
         }
     }
 
@@ -115,16 +120,14 @@ public class Dealer implements Runnable {
      * Check if any cards can be removed from the deck and placed on the table.
      */
     private void placeCardsOnTable() {
-        // TODO implement
         for(int i = 0; i < 12; i++){
-            if (table.slotToCard[i] == null){
+            if (table.slotToCard[i] == null ){
                 table.placeCard(deck.remove(0), i);
                 if (deck.isEmpty())
                     return;
             }
         }
-
-   
+        table.hints();
     }
 
     /**
@@ -132,6 +135,13 @@ public class Dealer implements Runnable {
      */
     private void sleepUntilWokenOrTimeout() {
         // TODO implement
+            try{
+                Thread.sleep(1000);
+            } catch(InterruptedException e){
+                System.out.println("sleep intrrupted");
+            }
+            
+        
     }
 
     /**
@@ -139,6 +149,12 @@ public class Dealer implements Runnable {
      */
     private void updateTimerDisplay(boolean reset) {
         // TODO implement
+        if (reset){
+            reshuffleTime = System.currentTimeMillis()+ 60000;
+        }
+        else{
+            env.ui.setCountdown(reshuffleTime - System.currentTimeMillis(), reset);
+        }
     }
 
     /**
@@ -173,17 +189,38 @@ public class Dealer implements Runnable {
 
     public void checkTokens(int player){
         int[] set = table.getPlayerSet(player);
+        if(set.length != 3){
+            return;
+        }
         if(env.util.testSet(set)){
             players[player].point();
             env.ui.setScore(player, players[player].getScore());
-            removeCardsFromTable();
-            Collections.shuffle(deck);
+            // removeCardsFromTable();
+            removeCardsFromTable(player);
             table.removeTokens(player);
+            Collections.shuffle(deck);
+            updateTimerDisplay(true);
+            players[player].resetTokens();
             placeCardsOnTable();
         }
         else{
             players[player].penalty();
         }
+        //  int[] set = table.getPlayerSet(player);
+        
+        // synchronized(Table.lock){
+        //     if(env.util.testSet(set)){
+        //         players[player].point();
+        //         env.ui.setScore(player, players[player].getScore());
+        //         removeCardsFromTable();
+        //         table.removeTokens(player);
+        //         Collections.shuffle(deck);
+        //         players[player].resetTokens();
+        //         placeCardsOnTable();
+        //     }
+        //     else{
+        //     players[player].penalty();
+        // }
         
             
     }
@@ -197,3 +234,4 @@ public class Dealer implements Runnable {
     }
 
 }
+

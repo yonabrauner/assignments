@@ -82,6 +82,8 @@ public class Player implements Runnable {
             // TODO implement main player loop
             //WAIT for counter to be 3
             //when three tokens go to dealer to check
+            
+            try { playerThread.wait(); } catch (InterruptedException ignored) {}
         }
         if (!human) try { aiThread.join(); } catch (InterruptedException ignored) {}
         System.out.printf("Info: Thread %s terminated.%n", Thread.currentThread().getName());
@@ -111,6 +113,7 @@ public class Player implements Runnable {
      */
     public void terminate() {
         // TODO implement
+        
     }
 
     /**
@@ -121,15 +124,17 @@ public class Player implements Runnable {
     public void keyPressed(int slot) {
         // TODO implement
         if(!table.removeToken(id, slot)){
+            if(tokens==3)return;
             table.placeToken(id, slot);
             tokens++;
         }
         else{
             tokens--;
         }
-        if(tokens == 3){
-            this.dealer.checkTokens(id);
-            
+        synchronized(this){
+            if(tokens == 3){
+                this.dealer.checkTokens(id);
+            }
         }
     }
 
@@ -144,6 +149,12 @@ public class Player implements Runnable {
 
         int ignored = table.countCards(); // this part is just for demonstration in the unit tests
         env.ui.setScore(id, ++score);
+        try {
+            env.ui.setFreeze(id, env.config.pointFreezeMillis);
+            Thread.sleep(env.config.pointFreezeMillis);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
     /**
@@ -151,10 +162,19 @@ public class Player implements Runnable {
      */
     public void penalty() {
         // TODO implement
-        //wait for few seconds
+        try {
+            env.ui.setFreeze(id, env.config.penaltyFreezeMillis);
+            Thread.sleep(env.config.penaltyFreezeMillis);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
     public int getScore() {
         return score;
+    }
+
+    public void resetTokens(){
+        tokens = 0;
     }
 }
